@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Trade Shifts Analysis</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .chart-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        .footer {
+            margin-top: 40px;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .scenario-key {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .key-item {
+            display: flex;
+            align-items: center;
+        }
+        .key-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Global Trade Shifts Analysis (2020-2030)</h1>
+        <p>Visualizing the impact of US tariffs, China+1 strategy, and emerging EU/Spain-China partnerships</p>
+        
+        <div class="chart-container">
+            <h2>Manufacturing Supply Chain Distribution</h2>
+            <canvas id="supplyChainChart"></canvas>
+            <div class="scenario-key">
+                <div class="key-item"><div class="key-color" style="background-color: #FF6B6B;"></div><span>China</span></div>
+                <div class="key-item"><div class="key-color" style="background-color: #4ECDC4;"></div><span>Southeast Asia</span></div>
+                <div class="key-item"><div class="key-color" style="background-color: #45B7D1;"></div><span>Mexico</span></div>
+                <div class="key-item"><div class="key-color" style="background-color: #FFA07A;"></div><span>US</span></div>
+                <div class="key-item"><div class="key-color" style="background-color: #7E6B8F;"></div><span>EU/Spain</span></div>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <h2>Key Economic Indicators</h2>
+            <canvas id="economicChart"></canvas>
+        </div>
+        
+        <div class="chart-container">
+            <h2>Projected 2030 Impact by Trade Scenario</h2>
+            <canvas id="scenarioChart"></canvas>
+        </div>
+        
+        <div class="footer">
+            <h3>Analysis Insights</h3>
+            <p><strong>China+1 Strategy:</strong> Accelerating supply chain diversification from China to SEA/Mexico since 2022</p>
+            <p><strong>US Tariffs:</strong> Creating short-term manufacturing gains but long-term export declines (projected -23% by 2030)</p>
+            <p><strong>EU/Spain-China Partnership:</strong> Emerging as alternative trade axis, projected 320% trade growth by 2030</p>
+            <p><strong>Global Fragmentation:</strong> Bifurcation into US and China/EU spheres reducing overall trade volume</p>
+        </div>
+    </div>
+
+    <script>
+        // Supply Chain Distribution Chart
+        const supplyChainCtx = document.getElementById('supplyChainChart').getContext('2d');
+        new Chart(supplyChainCtx, {
+            type: 'line',
+            data: {
+                labels: Array.from({length: 11}, (_, i) => 2020 + i),
+                datasets: [
+                    {
+                        label: 'China',
+                        data: [80, 75, 65, 55, 45, 40, 35, 32, 30, 29, 28],
+                        backgroundColor: 'rgba(255, 107, 107, 0.7)',
+                        borderColor: '#FF6B6B',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Southeast Asia',
+                        data: [10, 15, 22, 28, 32, 35, 38, 39, 40, 41, 42],
+                        backgroundColor: 'rgba(78, 205, 196, 0.7)',
+                        borderColor: '#4ECDC4',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Mexico',
+                        data: [5, 6, 8, 12, 15, 18, 20, 20, 21, 21, 22],
+                        backgroundColor: 'rgba(69, 183, 209, 0.7)',
+                        borderColor: '#45B7D1',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'US',
+                        data: [5, 4, 5, 5, 8, 7, 7, 7, 7, 7, 6],
+                        backgroundColor: 'rgba(255, 160, 122, 0.7)',
+                        borderColor: '#FFA07A',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'EU/Spain',
+                        data: [0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2],
+                        backgroundColor: 'rgba(126, 107, 143, 0.7)',
+                        borderColor: '#7E6B8F',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    },
+                    annotation: {
+                        annotations: {
+                            chinaPlusOne: {
+                                type: 'line',
+                                yMin: 75,
+                                yMax: 75,
+                                xMin: 2022,
+                                xMax: 2022,
+                                borderColor: 'rgba(0,0,0,0.7)',
+                                borderWidth: 2,
+                                borderDash: [6, 6],
+                                label: {
+                                    content: '"China+1" Strategy Begins',
+                                    enabled: true,
+                                    position: 'left'
+                                }
+                            },
+                            usTariffs: {
+                                type: 'line',
+                                yMin: 50,
+                                yMax: 50,
+                                xMin: 2024,
+                                xMax: 2024,
+                                borderColor: 'rgba(0,0,0,0.7)',
+                                borderWidth: 2,
+                                borderDash: [6, 6],
+                                label: {
+                                    content: 'US Tariffs Implemented',
+                                    enabled: true,
+                                    position: 'right'
+                                }
+                            },
+                            euChina: {
+                                type: 'line',
+                                yMin: 32,
+                                yMax: 32,
+                                xMin: 2027,
+                                xMax: 2027,
+                                borderColor: 'rgba(126, 107, 143, 0.7)',
+                                borderWidth: 2,
+                                label: {
+                                    content: 'EU/Spain-China Partnership',
+                                    enabled: true,
+                                    position: 'left'
+                                }
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        stacked: true,
+                        title: {
+                            display: true,
+                            text: 'Percentage of Supply Chain'
+                        },
+                        min: 0,
+                        max: 100
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Year'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Economic Indicators Chart
+        const economicCtx = document.getElementById('economicChart').getContext('2d');
+        new Chart(economicCtx, {
+            type: 'line',
+            data: {
+                labels: Array.from({length: 11}, (_, i) => 2020 + i),
+                datasets: [
+                    {
+                        label: 'US Export Competitiveness',
+                        data: [100, 98, 95, 92, 90, 88, 85, 83, 81, 79, 77],
+                        borderColor: '#2E86AB',
+                        backgroundColor: 'rgba(46, 134, 171, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.2,
+                        pointRadius: 5
+                    },
+                    {
+                        label: 'China Trade Surplus (÷13)',
+                        data: [7.7, 8.5, 10, 13.8, 19.2, 30.8, 46.2, 65.4, 76.9, 88.5, 100],
+                        borderColor: '#D1495B',
+                        backgroundColor: 'rgba(209, 73, 91, 0.1)',
+                        borderWidth: 3,
+                        borderDash: [5, 5],
+                        tension: 0.2,
+                        pointRadius: 5
+                    },
+                    {
+                        label: 'Global Trade Volume',
+                        data: [100, 102, 101, 99, 97, 95, 93, 92, 91, 90, 89],
+                        borderColor: '#EDAE49',
+                        backgroundColor: 'rgba(237, 174, 73, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.2,
+                        pointRadius: 5
+                    },
+                    {
+                        label: 'US Auto Exports',
+                        data: [100, 102, 101, 99, 96, 92, 85, 80, 76, 73, 70],
+                        borderColor: '#00798C',
+                        backgroundColor: 'rgba(0, 121, 140, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.2,
+                        pointRadius: 5
+                    },
+                    {
+                        label: 'EU-China Trade Volume (÷4)',
+                        data: [25, 26.3, 28.8, 32.5, 37.5, 45, 55, 67.5, 80, 92.5, 105],
+                        borderColor: '#7E6B8F',
+                        backgroundColor: 'rgba(126, 107, 143, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.2,
+                        pointRadius: 5
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label.includes('÷')) {
+                                    const multiplier = parseInt(label.match(/÷(\d+)/)[1]);
+                                    return label.split(' (')[0] + ': ' + (context.raw * multiplier).toFixed(1);
+                                }
+                                return label + ': ' + context.raw;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Index Value (2020 = 100)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Year'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Scenario Impact Chart
+        const scenarioCtx = document.getElementById('scenarioChart').getContext('2d');
+        new Chart(scenarioCtx, {
+            type: 'bar',
+            data: {
+                labels: ['China+1 Strategy', 'US+1 Strategy', 'USMCA Preservation', 'Global Fragmentation', 'EU-China Partnership'],
+                datasets: [
+                    {
+                        label: 'US Manufacturing',
+                        data: [5, 15, 8, -5, -3],
+                        backgroundColor: 'rgba(46, 134, 171, 0.7)',
+                        borderColor: '#2E86AB',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Export Growth',
+                        data: [-10, -15, 5, -20, -8],
+                        backgroundColor: 'rgba(209, 73, 91, 0.7)',
+                        borderColor: '#D1495B',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Consumer Prices',
+                        data: [12, 18, 5, 15, 7],
+                        backgroundColor: 'rgba(237, 174, 73, 0.7)',
+                        borderColor: '#EDAE49',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'FDI to US',
+                        data: [15, 25, 10, -10, -5],
+                        backgroundColor: 'rgba(0, 121, 140, 0.7)',
+                        borderColor: '#00798C',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'EU-China Trade',
+                        data: [0, -5, 0, 10, 40],
+                        backgroundColor: 'rgba(126, 107, 143, 0.7)',
+                        borderColor: '#7E6B8F',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        stacked: false,
+                    },
+                    y: {
+                        stacked: false,
+                        title: {
+                            display: true,
+                            text: 'Percentage Change from Baseline'
+                        },
+                        min: -25,
+                        max: 45
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
